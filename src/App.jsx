@@ -3,21 +3,28 @@ import Player from "./components/Player.jsx"
 import Gameboard from "./components/BoardGame.jsx";
 import Log from "./components/Log.jsx";
 
+function deriveActivePlayer( gameTurns){
+  let currentPlayer = 'X'
+      
+    if ( gameTurns.length > 0 && gameTurns[0].player === 'X'){
+      currentPlayer = 'O'
+    }
+
+  return currentPlayer  
+}
+
 
 function App() {
   
   const[ gameTurns, setGameTurns ] = useState([])
-  const[ activePlayer,setActivePlayer ] = useState('X');
+  // const[ activePlayer,setActivePlayer ] = useState('X');
+  const activePlayer = deriveActivePlayer(gameTurns)
 
   function handleSelectedSquare( idxRow , idxCol ){
-    setActivePlayer((currentActivePlayer)=> currentActivePlayer === 'X' ? 'O' : 'X');
-
+    // setActivePlayer((currentActivePlayer)=> currentActivePlayer === 'X' ? 'O' : 'X');
     setGameTurns((prevTurns) =>{
-      let currentPlayer = 'X'
       
-      if ( prevTurns.length > 0 && prevTurns[0].player === 'X'){
-        currentPlayer = 'O'
-      }
+      const currentPlayer = deriveActivePlayer(prevTurns);
 
       const updatedTurns = [
       { square: { row: idxRow , col: idxCol }, player: currentPlayer}, 
@@ -39,7 +46,7 @@ function App() {
         turns={gameTurns}
         />
       </div>
-      <Log />
+      <Log turns={gameTurns}/>
     </main>
   )
 }
